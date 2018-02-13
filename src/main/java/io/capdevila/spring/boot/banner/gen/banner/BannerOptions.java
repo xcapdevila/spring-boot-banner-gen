@@ -1,4 +1,4 @@
-package be.ordina.cloudfoundry.banner;
+package io.capdevila.spring.boot.banner.gen.banner;
 
 import lombok.Getter;
 import lombok.Setter;
