@@ -1,4 +1,4 @@
-package be.ordina.cloudfoundry.util;
+package io.capdevila.spring.boot.banner.gen.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

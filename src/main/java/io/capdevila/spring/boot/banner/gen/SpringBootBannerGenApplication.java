@@ -1,4 +1,4 @@
-package be.ordina.cloudfoundry;
+package io.capdevila.spring.boot.banner.gen;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
