@@ -5,7 +5,7 @@
 
     <groupId>io.capdevila</groupId>
     <artifactId>spring-boot-banner-gen</artifactId>
-    <version>1.0-RC1</version>
+    <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>spring-boot-banner-gen</name>
