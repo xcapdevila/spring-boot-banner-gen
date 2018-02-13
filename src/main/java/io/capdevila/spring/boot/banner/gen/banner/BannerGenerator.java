@@ -1,6 +1,6 @@
-package be.ordina.cloudfoundry.banner;
+package io.capdevila.spring.boot.banner.gen.banner;
 
-import be.ordina.cloudfoundry.util.MaxSizeHashMap;
+import io.capdevila.spring.boot.banner.gen.util.MaxSizeHashMap;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,48 +1,35 @@
-package be.ordina.cloudfoundry.controller;
+package io.capdevila.spring.boot.banner.gen.controller;
 
-import be.ordina.cloudfoundry.banner.Banner;
-import be.ordina.cloudfoundry.banner.BannerGenerator;
-import be.ordina.cloudfoundry.banner.BannerOptions;
-import be.ordina.cloudfoundry.validation.UploadValidator;
+import io.capdevila.spring.boot.banner.gen.banner.Banner;
+import io.capdevila.spring.boot.banner.gen.banner.BannerGenerator;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.validation.Valid;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
-@Controller
+@RestController
 @RequestMapping("/banner")
 public class BannerController {
 
-    @Autowired
-    private BannerGenerator bannerGenerator;
+	private BannerGenerator bannerGenerator;
 
-    @InitBinder("bannerOptions")
-    protected void initBinder(WebDataBinder binder) {
-        binder.addValidators(new UploadValidator());
-    }
+	public BannerController(BannerGenerator bannerGenerator) {
+		this.bannerGenerator = bannerGenerator;
+	}
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String show(@SuppressWarnings("UnusedParameters") BannerOptions bannerOptions) {
-        return "banner";
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public String generateBanner(@Valid @ModelAttribute("bannerOptions") BannerOptions bannerOptions, BindingResult errors, Model model) {
-        if (errors.hasErrors()) {
-            return "banner";
-        }
-        log.info("Received request for image [" + bannerOptions.getImage().getOriginalFilename() + "]");
-        Banner banner = bannerGenerator.generateBanner(bannerOptions.getImage(), bannerOptions.isDark());
-        model.addAttribute("banner", banner);
-        return "banner";
-    }
+	@RequestMapping(value = "/generate", method = RequestMethod.POST)
+	public String generateBanner(@RequestParam("image") MultipartFile image, @RequestParam(value = "dark", defaultValue = "false") boolean dark,
+			@RequestParam(value = "ansi", defaultValue = "true") boolean ansi) {
+		log.info("image content-type: {}", image.getContentType());
+		log.info("dark: {}", dark);
+		log.info("ansi: {}", ansi);
+		Banner banner = bannerGenerator.generateBanner(image, dark);
+		if (ansi) {
+			return banner.getAnsi();
+		}
+		return banner.getHtml();
+	}
 }
